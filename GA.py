@@ -6,15 +6,15 @@ from asap_sort import ASAPSort
 from patient import getPatients
 from scheduler import scheduler
 
-def GASort(p_list, max_iteration, m_rate, c_rate, population):
-	map = {p['id']: p for p in p_list}
+def GASort(array, max_iteration, m_rate, c_ratio, population):
+	map = {p['id']: p for p in array}
 	
 	def produce(parents):
 		if len(parents) == 0:
 			print('error')
 		parents = sorted(parents, key = lambda x: scheduler(toList(x), CAPACITY)[0])
 		
-		maxLengthCross = math.floor(len(parents) * c_rate)
+		maxLengthCross = math.floor(len(parents) * c_ratio)
 		
 		offspring = []
 		
@@ -33,7 +33,7 @@ def GASort(p_list, max_iteration, m_rate, c_rate, population):
 	
 	def fillParents(parents):
 		while(len(parents) < population):
-			temp = [ x for x in range(1, len(p_list)+1)]
+			temp = [ x for x in range(1, len(array)+1)]
 			random.shuffle(temp)
 			parents.append(temp)
 	
@@ -102,7 +102,7 @@ def GASort(p_list, max_iteration, m_rate, c_rate, population):
 			p1[index2] = temp
 	
 	iterate = 0
-	parents = [ASAPSort(p_list)[1]]
+	parents = [ASAPSort(array)[1]]
 	while(iterate < max_iteration):
 		fillParents(parents)
 		parents = produce(parents)
